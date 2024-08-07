@@ -1,7 +1,7 @@
 //go:build !dev
 // +build !dev
 
-package static
+package main
 
 import (
 	"embed"
@@ -11,6 +11,6 @@ import (
 //go:embed public
 var publicFS embed.FS
 
-func Public() http.Handler {
+func public() http.Handler {
 	return http.FileServerFS(publicFS)
 }
