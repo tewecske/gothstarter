@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	project "gothstarter"
 	"gothstarter/handlers"
 	"log"
 	"log/slog"
@@ -18,7 +19,7 @@ func main() {
 	}
 	router := chi.NewMux()
 
-	router.Handle("/*", public())
+	router.Handle("/*", project.Public())
 	router.Get("/foo", handlers.Make(handlers.HandleFoo))
 	fmt.Println("hello world!")
 

@@ -1,7 +1,7 @@
 //go:build dev
 // +build dev
 
-package main
+package project
 
 import (
 	"fmt"
@@ -9,7 +9,7 @@ import (
 	"os"
 )
 
-func public() http.Handler {
+func Public() http.Handler {
 	fmt.Println("building static files for development")
 	return http.StripPrefix("/public/", http.FileServerFS(os.DirFS("public")))
 }

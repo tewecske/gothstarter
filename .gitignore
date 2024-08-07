@@ -1,6 +1,8 @@
-bin
-tmp
 *.db
+/tmp/
+/dist/
+/node_modules/
+/views/**/*.go
+/views/**/*.txt
 tailwindcss
-node_modules/
 
