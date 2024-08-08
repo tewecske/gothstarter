@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"gothstarter/web/views/home"
+	"gothstarter/web/templates/home"
 	"net/http"
 )
 
