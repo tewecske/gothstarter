@@ -1,22 +1,27 @@
 package handlers
 
 import (
-	"log/slog"
 	"net/http"
 
 	"github.com/a-h/templ"
+	"gothstarter/web/templates"
 )
 
-type HTTPHandler func(w http.ResponseWriter, r *http.Request) error
+type HTTPHandler func(w http.ResponseWriter, r *http.Request)
 
 func Make(h HTTPHandler) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		if err := h(w, r); err != nil {
-			slog.Error("HTTP handler error", "error", err, "path", r.URL.Path)
-		}
+		// if err := h(w, r); err != nil {
+		// slog.Error("HTTP handler error", "error", err, "path", r.URL.Path)
+		// }
+		h(w, r)
 	}
 }
 
-func Render(w http.ResponseWriter, r *http.Request, c templ.Component) error {
-	return c.Render(r.Context(), w)
+func Render(w http.ResponseWriter, r *http.Request, c templ.Component) {
+	err := templates.Layout(c, "GOTH Starter").Render(r.Context(), w)
+	if err != nil {
+		http.Error(w, "Error rendering template", http.StatusInternalServerError)
+		return
+	}
 }

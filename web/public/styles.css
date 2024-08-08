@@ -866,6 +866,10 @@ html {
   }
 }
 
+.contents {
+  display: contents;
+}
+
 .antialiased {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

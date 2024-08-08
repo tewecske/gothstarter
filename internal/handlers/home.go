@@ -1,10 +1,10 @@
 package handlers
 
 import (
-	"gothstarter/web/templates/home"
+	"gothstarter/web/templates"
 	"net/http"
 )
 
-func HandleHome(w http.ResponseWriter, r *http.Request) error {
-	return Render(w, r, home.Index())
+func HandleHome(w http.ResponseWriter, r *http.Request) {
+	Render(w, r, templates.Index())
 }

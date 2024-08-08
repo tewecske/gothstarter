@@ -1,6 +1,6 @@
-package layout
+package templates
 
-templ Base() {
+templ Layout(contents templ.Component, title string) {
     <!DOCTYPE html>
     <html lang="en">
         <head>
@@ -12,7 +12,7 @@ templ Base() {
             <script src="https://unpkg.com/htmx.org@2.0.1" defer></script>
         </head>
         <body class="antialiased">
-            { children... }
+            @contents
         </body>
     </html>
 }
