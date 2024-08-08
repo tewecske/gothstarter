@@ -11,9 +11,11 @@ import (
 )
 
 func main() {
-	router := chi.NewMux()
+	router := chi.NewRouter()
 
-	router.Handle("/*", project.Public())
+	router.NotFound(handlers.Make(handlers.HandleNotFound))
+
+	router.Handle("/static/*", http.StripPrefix("/static", project.Public()))
 
 	router.Get("/", handlers.Make(handlers.HandleHome))
 

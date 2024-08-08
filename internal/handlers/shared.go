@@ -20,6 +20,7 @@ func Make(h HTTPHandler) http.HandlerFunc {
 
 func Render(w http.ResponseWriter, r *http.Request, c templ.Component) {
 	err := templates.Layout(c, "GOTH Starter").Render(r.Context(), w)
+
 	if err != nil {
 		http.Error(w, "Error rendering template", http.StatusInternalServerError)
 		return
