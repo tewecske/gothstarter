@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	project "gothstarter"
-	"gothstarter/handlers"
+	"gothstarter/internal/handlers"
 	"log"
 	"log/slog"
 	"net/http"
@@ -19,8 +19,8 @@ func main() {
 	}
 	router := chi.NewMux()
 
-	router.Handle("/*", project.Public())
-	router.Get("/foo", handlers.Make(handlers.HandleFoo))
+	router.Handle("/static/*", project.Public())
+	router.Get("/", handlers.Make(handlers.HandleHome))
 	fmt.Println("hello world!")
 
 	listenAddr := os.Getenv("LISTEN_ADDR")

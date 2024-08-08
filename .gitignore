@@ -2,7 +2,7 @@
 /tmp/
 /dist/
 /node_modules/
-/views/**/*.go
-/views/**/*.txt
+/web/views/**/*.go
+/web/views/**/*.txt
 tailwindcss
 

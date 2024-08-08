@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-//go:embed public
+//go:embed web/public
 var publicFS embed.FS
 
 func Public() http.Handler {
