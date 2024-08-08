@@ -12,5 +12,6 @@ css:
 
 clean:
 	rm -rf tmp/
-	find web/views/ -name '*templ.go' -type f -print0 | xargs -o rm
+	rm web/public/styles.css
+	find web/views/ -name '*templ.go' -type f -print0 | xargs -0 rm
 

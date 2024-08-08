@@ -13,7 +13,7 @@ import (
 func main() {
 	router := chi.NewMux()
 
-	router.Handle("/static/*", project.Public())
+	router.Handle("/*", project.Public())
 
 	router.Get("/", handlers.Make(handlers.HandleHome))
 
