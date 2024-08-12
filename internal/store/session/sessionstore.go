@@ -3,17 +3,18 @@ package session
 import (
 	"fmt"
 	"gothstarter/internal/store/user"
+	"log/slog"
 
 	"github.com/google/uuid"
 	"github.com/jmoiron/sqlx"
 )
 
-const UserSchema = `
+const SessionSchema = `
 CREATE TABLE sessions (
 	id INTEGER PRIMARY KEY,
 	session_id TEXT UNIQUE,
-	user_id INTEGER,
-	FOREIFN KEY(user_id) REFERENCES users(id)
+	user_id INTEGER NOT NULL,
+	FOREIGN KEY(user_id) REFERENCES users(id)
 );`
 
 type SQLSessionStore struct {
@@ -34,14 +35,19 @@ func (s *SQLSessionStore) CreateSession(session *Session) (*Session, error) {
 
 	session.SessionID = uuid.New().String()
 
-	_, err := s.db.NamedExec(`INSERT INTO sessions (session_id, user_id) VALUES (:session_id, :user_id);`, map[string]interface{}{
+	result, err := s.db.NamedExec(`INSERT INTO sessions (session_id, user_id) VALUES (:session_id, :user_id);`, map[string]interface{}{
 		"session_id": session.SessionID,
 		"user_id":    session.UserID,
 	})
 
 	if err != nil {
+		slog.Info("Error creating session", "err", err)
 		return nil, err
 	}
+	id, _ := result.LastInsertId()
+
+	slog.Info("Inserting session", "lastId", id)
+
 	return session, nil
 }
 
@@ -51,7 +57,7 @@ func (s *SQLSessionStore) GetUserFromSession(sessionID string, userID string) (*
 		SELECT u.id as id, u.email as email, u.password as password
 		FROM users as u
 		JOIN sessions as s ON u.id = s.user_id
-		WHERE s.id=:session_id AND u.id=:user_id`,
+		WHERE s.session_id=:session_id AND u.id=:user_id`,
 		map[string]interface{}{
 			"session_id": sessionID,
 			"user_id":    userID,

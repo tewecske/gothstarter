@@ -6,7 +6,9 @@ import (
 )
 
 type Config struct {
-	Port string
+	Port              string
+	SessionCookieName string
+	DatabaseName      string
 }
 
 func LoadConfig() *Config {
@@ -16,7 +18,9 @@ func LoadConfig() *Config {
 	}
 
 	cfg := Config{
-		Port: os.Getenv("LISTEN_ADDR"),
+		Port:              os.Getenv("LISTEN_ADDR"),
+		SessionCookieName: os.Getenv("SESSION_COOKIE_NAME"),
+		DatabaseName:      os.Getenv("DATABASE_NAME"),
 	}
 
 	return &cfg

@@ -2,6 +2,7 @@ package user
 
 import (
 	"gothstarter/internal/hash"
+	"log/slog"
 
 	"github.com/jmoiron/sqlx"
 )
@@ -9,8 +10,8 @@ import (
 const UserSchema = `
 CREATE TABLE users (
 	id INTEGER PRIMARY KEY,
-	email TEXT,
-	password TEXT
+	email TEXT NOT NULL,
+	password TEXT NOT NULL
 );`
 
 type SQLUserStore struct {
@@ -37,11 +38,19 @@ func (s *SQLUserStore) CreateUser(email string, password string) error {
 		return err
 	}
 
-	_, err = s.db.NamedExec(`INSER INTO users (email, password) VALUES (:email, :password)`,
+	result, err := s.db.NamedExec(`INSERT INTO users (email, password) VALUES (:email, :password);`,
 		map[string]interface{}{
 			"email":    email,
 			"password": hashedPassword,
 		})
+
+	if err != nil {
+		slog.Info("Error creating user", "err", err)
+	} else {
+		id, _ := result.LastInsertId()
+
+		slog.Info("Inserting user", "lastId", id)
+	}
 
 	return err
 }
@@ -49,7 +58,7 @@ func (s *SQLUserStore) CreateUser(email string, password string) error {
 func (s *SQLUserStore) GetUser(email string) (*User, error) {
 
 	user := User{}
-	rows, err := s.db.NamedQuery(`SELECT id, email, password FROM users where email=:email`,
+	rows, err := s.db.NamedQuery(`SELECT id, email, password FROM users where email=:email;`,
 		map[string]interface{}{
 			"email": email,
 		})
