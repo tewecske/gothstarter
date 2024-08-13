@@ -14,5 +14,6 @@ require (
 require (
 	github.com/mattn/go-sqlite3 v1.14.22 // indirect
 	github.com/qustavo/sqlhooks/v2 v2.1.0 // indirect
+	github.com/unrolled/secure v1.15.0 // indirect
 	golang.org/x/sys v0.23.0 // indirect
 )

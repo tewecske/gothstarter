@@ -10,9 +10,10 @@ templ header(title string) {
     <title>{ title }</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="https://unpkg.com/htmx.org@2.0.1" defer></script>
-    <!-- script src="static/script/htmx.min.js" nonce={ middleware.GetHtmxNonce(ctx) }></script -->
-    <!--script src="static/script/response-targets.js" nonce={ middleware.GetResponseTargetsNonce(ctx) }></script-->
+    <!--script src="https://unpkg.com/htmx.org@2.0.1" defer></script -->
+    <script src="/static/public/htmx.min.js" integrity="sha256-bUqqSw0+i0yR+Nl7kqNhoZsb1FRN6j9mj9w+YqY5ld8="></script>
+    <script src="static/public/response-targets.js"
+        integrity="sha256-EtDJKiu1jHe6jtwOCABcdSkppIaCP/+vBbsOPG/numY="></script>
     if os.Getenv("env") == "production" {
     <link rel="stylesheet" href="/static/public/styles.css" />
     <!-- link rel="stylesheet" href="static/css/style.min.css" nonce={ middleware.GetTwNonce(ctx) }/ -->

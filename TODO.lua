@@ -1,5 +1,6 @@
 --[[
  WARN: remove dummy user
+ WARN: configure security middleware
 
  FIX: use the same logger everywhere
 
