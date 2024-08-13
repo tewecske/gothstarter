@@ -1,12 +1,13 @@
 --[[
  WARN: remove dummy user
 
- FIX: Move GothDB to separate file
+ FIX: use the same logger everywhere
 
- TODO: add logout
- TODO: add google login
- TODO: add remember me
+ TODO: proper security/CSP middleware
  TODO: add a test
+ TODO: add google login
+ TODO: add logout
+ TODO: add remember me
  TODO: add authorization (group from GOTTH)
  TODO: add proper layout (TailAdmin like)
  TODO: add design to login form

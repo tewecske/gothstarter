@@ -6,4 +6,5 @@
 /web/templates/*.go
 /web/templates/*.txt
 tailwindcss
+*.vim
 
