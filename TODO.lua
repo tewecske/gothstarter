@@ -16,6 +16,7 @@
  HACK:
 
  NOTE: need easy replace of "gothstarter"
+ NOTE: NewUser generates the password and saves to DB as well, maybe separate it
 
  BUG:
 

@@ -1,6 +1,7 @@
 package db
 
 import (
+	"gothstarter/internal/hash"
 	"gothstarter/internal/store/session"
 	"gothstarter/internal/store/user"
 	"log/slog"
@@ -16,6 +17,31 @@ import (
 
 	"github.com/qustavo/sqlhooks/v2"
 )
+
+type DBAccess struct {
+	DB           *sqlx.DB
+	UserStore    user.UserStore
+	SessionStore session.SessionStore
+}
+
+func SetupDB(dbName string, passwordHash hash.PasswordHash) *DBAccess {
+	db := Connect(dbName)
+
+	userStore := user.NewUserStore(user.NewUserStoreParams{
+		DB:           db,
+		PasswordHash: passwordHash,
+	})
+
+	sessionStore := session.NewSessionStore(session.NewSessionStoreParams{
+		DB: db,
+	})
+
+	return &DBAccess{
+		DB:           db,
+		UserStore:    userStore,
+		SessionStore: sessionStore,
+	}
+}
 
 // Hooks satisfies the sqlhook.Hooks interface
 type Hooks struct{}

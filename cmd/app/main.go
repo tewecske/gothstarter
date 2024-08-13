@@ -6,11 +6,9 @@ import (
 	project "gothstarter"
 	"gothstarter/internal/config"
 	"gothstarter/internal/handlers"
-	"gothstarter/internal/hash"
 	"gothstarter/internal/hash/passwordhash"
 	database "gothstarter/internal/store/db"
 	"gothstarter/internal/store/session"
-	"gothstarter/internal/store/user"
 	"log/slog"
 	"net/http"
 	"os"
@@ -19,7 +17,6 @@ import (
 	"time"
 
 	"github.com/go-chi/chi/v5"
-	"github.com/jmoiron/sqlx"
 )
 
 func main() {
@@ -29,10 +26,10 @@ func main() {
 
 	passwordHash := passwordhash.NewHPasswordHash()
 
-	gothDB := setupDB(cfg.DatabaseName, passwordHash)
+	dbAccess := database.SetupDB(cfg.DatabaseName, passwordHash)
 
-	gothDB.UserStore.CreateUser("a@a.a", "aaa")
-	gothDB.SessionStore.CreateSession(&session.Session{
+	dbAccess.UserStore.CreateUser("a@a.a", "aaa")
+	dbAccess.SessionStore.CreateSession(&session.Session{
 		UserID: 1,
 	})
 
@@ -47,8 +44,8 @@ func main() {
 	router.Get("/login", handlers.Make(handlers.HandleLogin))
 
 	router.Post("/login", handlers.Make(handlers.HandlePostLogin(
-		gothDB.UserStore,
-		gothDB.SessionStore,
+		dbAccess.UserStore,
+		dbAccess.SessionStore,
 		passwordHash,
 		cfg.SessionCookieName,
 	)))
@@ -85,7 +82,7 @@ func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	dbCloseError := gothDB.DB.Close()
+	dbCloseError := dbAccess.DB.Close()
 	if dbCloseError != nil {
 		logger.Error("DB close failed", slog.Any("err", dbCloseError))
 	} else {
@@ -99,29 +96,4 @@ func main() {
 	}
 
 	logger.Info("Server shutdown complete")
-}
-
-type GothDB struct {
-	DB           *sqlx.DB
-	UserStore    user.UserStore
-	SessionStore session.SessionStore
-}
-
-func setupDB(dbName string, passwordHash hash.PasswordHash) *GothDB {
-	db := database.Connect(dbName)
-
-	userStore := user.NewUserStore(user.NewUserStoreParams{
-		DB:           db,
-		PasswordHash: passwordHash,
-	})
-
-	sessionStore := session.NewSessionStore(session.NewSessionStoreParams{
-		DB: db,
-	})
-
-	return &GothDB{
-		DB:           db,
-		UserStore:    userStore,
-		SessionStore: sessionStore,
-	}
 }
