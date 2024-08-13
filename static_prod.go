@@ -14,3 +14,5 @@ var publicFS embed.FS
 func Public() http.Handler {
 	return http.FileServerFS(publicFS)
 }
+
+const IsDevelopment = false

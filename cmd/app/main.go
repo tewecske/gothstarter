@@ -61,13 +61,15 @@ func main() {
 		ContentTypeNosniff:      true,                                            // If ContentTypeNosniff is true, adds the X-Content-Type-Options header with the value `nosniff`. Default is false.
 		BrowserXssFilter:        true,                                            // If BrowserXssFilter is true, adds the X-XSS-Protection header with the value `1; mode=block`. Default is false.
 		// CustomBrowserXssValue:   "1; report=https://gothhost/xss-report",      // CustomBrowserXssValue allows the X-XSS-Protection header value to be set with a custom value. This overrides the BrowserXssFilter option. Default is "".
-		ContentSecurityPolicy: "default-src 'self'; script-src $NONCE 'sha256-bUqqSw0+i0yR+Nl7kqNhoZsb1FRN6j9mj9w+YqY5ld8=' 'sha256-EtDJKiu1jHe6jtwOCABcdSkppIaCP/+vBbsOPG/numY='", // ContentSecurityPolicy allows the Content-Security-Policy header value to be set with a custom value. Default is "". Passing a template string will replace `$NONCE` with a dynamic nonce value of 16 bytes for each request which can be later retrieved using the Nonce function.
-		ReferrerPolicy:        "same-origin",                                                                                                                                       // ReferrerPolicy allows the Referrer-Policy header with the value to be set with a custom value. Default is "".
+		ContentSecurityPolicy: "default-src 'self'; " +
+			"style-src $NONCE; " +
+			"script-src $NONCE 'sha256-bUqqSw0+i0yR+Nl7kqNhoZsb1FRN6j9mj9w+YqY5ld8=' 'sha256-EtDJKiu1jHe6jtwOCABcdSkppIaCP/+vBbsOPG/numY='", // ContentSecurityPolicy allows the Content-Security-Policy header value to be set with a custom value. Default is "". Passing a template string will replace `$NONCE` with a dynamic nonce value of 16 bytes for each request which can be later retrieved using the Nonce function.
+		ReferrerPolicy: "same-origin", // ReferrerPolicy allows the Referrer-Policy header with the value to be set with a custom value. Default is "".
 		// FeaturePolicy:           "vibrate 'none';",                               // Deprecated: this header has been renamed to PermissionsPolicy. FeaturePolicy allows the Feature-Policy header with the value to be set with a custom value. Default is "".
 		// PermissionsPolicy:       "fullscreen=(), geolocation=()",                 // PermissionsPolicy allows the Permissions-Policy header with the value to be set with a custom value. Default is "".
 		CrossOriginOpenerPolicy: "same-origin", // CrossOriginOpenerPolicy allows the Cross-Origin-Opener-Policy header with the value to be set with a custom value. Default is "".
 
-		IsDevelopment: true, // This will cause the AllowedHosts, SSLRedirect, and STSSeconds/STSIncludeSubdomains options to be ignored during development. When deploying to production, be sure to set this to false.
+		IsDevelopment: project.IsDevelopment, // This will cause the AllowedHosts, SSLRedirect, and STSSeconds/STSIncludeSubdomains options to be ignored during development. When deploying to production, be sure to set this to false.
 	})
 
 	authMiddleware := m.NewAuthMiddleware(dbAccess.SessionStore, cfg.SessionCookieName)

@@ -2,6 +2,8 @@ package templates
 
 import (
 "os"
+
+"github.com/unrolled/secure"
 )
 
 templ header(title string) {
@@ -15,10 +17,10 @@ templ header(title string) {
     <script src="static/public/response-targets.js"
         integrity="sha256-EtDJKiu1jHe6jtwOCABcdSkppIaCP/+vBbsOPG/numY="></script>
     if os.Getenv("env") == "production" {
-    <link rel="stylesheet" href="/static/public/styles.css" />
+    <link rel="stylesheet" href="/static/public/styles.css" nonce={ secure.CSPNonce(ctx) } />
     <!-- link rel="stylesheet" href="static/css/style.min.css" nonce={ middleware.GetTwNonce(ctx) }/ -->
     } else {
-    <link rel="stylesheet" href="/static/public/styles.css" />
+    <link rel="stylesheet" href="/static/public/styles.css" nonce={ secure.CSPNonce(ctx) } />
     <!--link rel="stylesheet" href="static/css/style.css" nonce={ middleware.GetTwNonce(ctx) }/ -->
     }
     <link rel="icon" type="image/x-icon" href="/static/public/favicon.ico" />
