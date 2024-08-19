@@ -27,12 +27,8 @@ templ header(title string) {
 </head>
 }
 
-templ footer() {
-<footer class="p-4"></footer>
-}
-
 templ nav() {
-<div class="navbar bg-neutral shadow-xl">
+<nav class="navbar bg-neutral shadow-xl">
     <div class="navbar-start">
         <div class="dropdown">
             <div tabindex="0" role="button" class="btn btn-ghost lg:hidden">
@@ -82,15 +78,31 @@ templ nav() {
             Login
         </a> -->
             <div>
-                <a class="cursor-pointer avatar placeholder">
-                    <div class="bg-primary hover:bg-base-content text-secondary w-12 rounded-full">
+                <a class="cursor-pointer avatar placeholder" href="/login">
+                    <div class=" bg-primary hover:bg-base-content text-secondary w-12 rounded-full">
                         <span>Login</span>
                     </div>
                 </a>
             </div>
         </div>
     </div>
-</div>
+</nav>
+}
+
+templ hero() {
+<section id="hero" class="hero">
+    <div class="hero-content mt-10">
+        <div class="max-w-6xl px-5 mx-auto text-center">
+            <h1 class="text-2xl font-bold">Hero content here</h1>
+        </div>
+    </div>
+</section>
+}
+
+templ footer() {
+<footer class="footer footer-center bg-neutral">
+    <h2 class="font-bold text-xl">Footer</h2>
+</footer>
 }
 
 templ Layout(contents templ.Component, title string) {
@@ -98,9 +110,10 @@ templ Layout(contents templ.Component, title string) {
 <html lang="en" data-theme="aqua">
 @header(title)
 
-<body>
+<body class="min-h-screen flex flex-col">
     @nav()
-    <main>
+    @hero()
+    <main class="flex-grow">
         @contents
     </main>
     @footer()
