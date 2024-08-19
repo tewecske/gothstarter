@@ -1,9 +1,11 @@
 package middleware
 
 import (
+	"context"
 	b64 "encoding/base64"
 	"fmt"
 	"gothstarter/internal/store/session"
+	"gothstarter/internal/store/user"
 	u "gothstarter/internal/store/user"
 	"net/http"
 	"strings"
@@ -70,4 +72,13 @@ func (m *AuthMiddleware) AddUserToContext(next http.Handler) http.Handler {
 
 		next.ServeHTTP(w, r.WithContext(ctx))
 	})
+}
+
+func GetUser(ctx context.Context) *user.User {
+	user, ok := user.FromContext(ctx)
+	if user == nil || !ok {
+		return nil
+	}
+
+	return user
 }

@@ -76,8 +76,6 @@ func main() {
 
 	router := chi.NewRouter()
 
-	router.NotFound(handlers.Make(handlers.HandleNotFound))
-
 	router.Handle("/static/*", http.StripPrefix("/static", project.Public()))
 
 	router.Group(func(r chi.Router) {
@@ -87,6 +85,9 @@ func main() {
 			m.TextHTMLMiddleware, // NOTE: it probably won't always be text/html
 			authMiddleware.AddUserToContext,
 		)
+
+		r.NotFound(handlers.Make(handlers.HandleNotFound))
+
 		r.Get("/", handlers.Make(handlers.HandleHome))
 
 		r.Get("/login", handlers.Make(handlers.HandleLogin))
@@ -95,6 +96,10 @@ func main() {
 			dbAccess.UserStore,
 			dbAccess.SessionStore,
 			passwordHash,
+			cfg.SessionCookieName,
+		)))
+
+		r.Post("/logout", handlers.Make(handlers.HandlePostLogout(
 			cfg.SessionCookieName,
 		)))
 	})

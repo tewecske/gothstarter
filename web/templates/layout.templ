@@ -2,7 +2,7 @@ package templates
 
 import (
 "os"
-
+"gothstarter/internal/middleware"
 "github.com/unrolled/secure"
 )
 
@@ -78,11 +78,20 @@ templ nav() {
             Login
         </a> -->
             <div>
+                if middleware.GetUser(ctx) == nil {
                 <a class="cursor-pointer avatar placeholder" href="/login">
                     <div class=" bg-primary hover:bg-base-content text-secondary w-12 rounded-full">
                         <span>Login</span>
                     </div>
                 </a>
+                } else {
+                <button class="cursor-pointer avatar placeholder" hx-target="body" hx-swap="innerHTML"
+                    hx-post="/logout">
+                    <div class=" bg-primary hover:bg-base-content text-secondary w-12 rounded-full">
+                        <span>Logout</span>
+                    </div>
+                </button>
+                }
             </div>
         </div>
     </div>
