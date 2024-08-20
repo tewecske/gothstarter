@@ -29,7 +29,6 @@ func HandlePostLogin(
 		password := r.FormValue("password")
 
 		user, err := userStore.GetUser(email)
-		slog.Info("Logging in user", "user email", email, "user", user.ID)
 
 		if err != nil {
 			w.WriteHeader(http.StatusUnauthorized)
@@ -37,6 +36,7 @@ func HandlePostLogin(
 			c.Render(r.Context(), w)
 			return
 		}
+		slog.Info("Logging in user", "user email", email, "user", user.ID)
 
 		passwordIsValid, err := passwordHash.ComparePasswordAndHash(password, user.Password)
 		slog.Info("User password", "valid", passwordIsValid)

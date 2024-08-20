@@ -6,7 +6,6 @@ type Session struct {
 	ID        uint
 	SessionID string
 	UserID    uint
-	User      user.User
 }
 
 type SessionStore interface {
